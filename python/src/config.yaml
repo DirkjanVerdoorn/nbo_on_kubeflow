@@ -1,0 +1,34 @@
+pipeline:
+  pipeline_name: 'DEFINE PIPELINE NAME HERE'
+  pipeline_root: 'DEFINE PIPELINE ROOT'
+  serving_model_dir: 'DEFINE MODEL SERVING ROOT'
+  tfx_root: 'DEFINE TFX ROOT'
+  pipeline_image: 'DEFINE PIPELINE IMAGE'
+  setup_file: 'DEFINE PIPELINE SETUP FILE LOCATION'
+
+gcs_buckets:
+  input_bucket: 'DEFINE GCS INPUT BUCKET'
+  output_bucket: 'DEFINE GCS OUTPUT BUCKET'
+
+data:
+  data_root: 'DEFINE YOUR DATA ROOT'
+  target_name: 'DEFINE LABEL NAME'
+  partition_features: ['DEFINE PARTITION FEATURES']
+  slicing_features: ['DEFINE SLICING FEATURES']
+
+gc_project:
+  project_id: 'DEFINE PROJECT ID'
+  gcp_region: 'DEFINE GC PROJECT REGION'
+
+module_files:
+  model_module_file: 'DEFINE MODEL MODULE FILE LOCATION IN GCS'
+  transform_module_file: 'DEFINE TRANSFORM MODULE FILE LOCATION IN GCS'
+
+training_and_tuning:
+  training_steps: 500
+  validation_steps: 250
+  tune_train_steps: 1000
+  tune_validation_steps: 250
+  parallel_trails: 10
+
+
