@@ -7,10 +7,9 @@ import pandas as pd
 from datetime import datetime
 
 import tensorflow as tf
-from tensorflow.python.lib.io import file_io
 import tensorflow_transform as tft
 
-from src.utils.helper_utils import get_config
+from src.utils.helper_utils import get_config, get_vocabulary, _transformed_name
 
 # Get configurations from yaml file
 configs = get_config()
@@ -18,46 +17,6 @@ configs = get_config()
 ####################################
 ######## Vocabulary Configs ########
 #################################### 
-
-def get_vocabulary(vocab_root: Text, 
-                column: Optional[Any]=None,
-                combined_cols: Optional[bool]=False,
-                **kwargs):
-    """
-    Description
-    -----------
-    Generates vocabulary list based on input file provided.
-
-    Parameters
-    ----------
-    vocab_root (string): String indicating location in GCS where 
-                            vocabulary csv file is stored.
-    column (list): List containing column name(s) of dataframe 
-                            needed to generate vocabulary
-    cobmined_cols (bool): boolean indicating if vocabulary is to be created by
-                            combining multiple columns in the input csv
-
-    Returns
-    -------
-    Returns both the full vocabulary as well as the length of the vocabulary
-    
-    """
-
-    if not combined_cols and type(column) == list:
-        raise ValueError("""If combined_cols is set to False, 
-        columns parameter should be single column name of type string""")
-
-    with file_io.FileIO(vocab_root, 'r') as f:
-        vocab = pd.read_csv(f)
-
-    if combined_cols:
-        vocab['joined'] = vocab[column].agg('-'.join, axis=1)
-        vocabulary = vocab['joined'].tolist()
-    else:
-        vocabulary = vocab[column].tolist()
-
-    return vocabulary, len(vocabulary)
-
 _, _vocab_size = get_vocabulary(
     vocab_root=configs['data']['vocab_root_csv'],
     column='vocabulary'
@@ -66,9 +25,6 @@ _, _vocab_size = get_vocabulary(
 ####################################
 ######### Helper Functions #########
 ####################################
-
-def _transformed_name(x):
-    return x + '_xf'
 
 def _fill_in_missing(x):
     """

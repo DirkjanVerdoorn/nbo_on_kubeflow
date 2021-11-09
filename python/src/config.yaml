@@ -5,6 +5,8 @@ pipeline:
   tfx_root: 'DEFINE TFX ROOT'
   pipeline_image: 'DEFINE PIPELINE IMAGE'
   setup_file: 'DEFINE PIPELINE SETUP FILE LOCATION'
+  transform_output: 'DEFINE LOCATION OF TRANSFORM OUTPUT'
+  raw_transform_output: 'DEFINE RAW TRANSFORM OUTPUT LOCATION'
 
 gcs_buckets:
   input_bucket: 'DEFINE GCS INPUT BUCKET'
@@ -15,6 +17,13 @@ data:
   target_name: 'DEFINE LABEL NAME'
   partition_features: ['DEFINE PARTITION FEATURES']
   slicing_features: ['DEFINE SLICING FEATURES']
+  string_feature_keys: ['DEFINE STRING FEATURE KEYS']
+  vocab_feature_keys: ['DEFINE VOCAB FEATURE KEYS']
+  bool_feature_keys: ['DEFINE BOOL FEATURE KEYS']
+  dense_float_feature_keys: ['DEFINE DENSE FLOAT FEATURE KEYS']
+  dense_int_feature_keys: ['DEFINE DENSE INT FEATURE KEYS']
+  vocab_root_csv: 'DEFINE CSV VOCABULARY ROOT'
+  vocab_root_txt: 'DEFINE TXT VOCABULARY ROOT'
 
 gc_project:
   project_id: 'DEFINE PROJECT ID'
@@ -29,6 +38,14 @@ training_and_tuning:
   validation_steps: 250
   tune_train_steps: 1000
   tune_validation_steps: 250
-  parallel_trails: 10
+  parallel_trails: 2
+  max_tuner_trials: 10
 
-
+model_configs:
+  max_basket_len: 10
+  batch_size: 256
+  learning_rate: 0.001
+  basket_embedding_dim: 64
+  charact_embedding_dim: 64
+  attention_units: 128
+  epochs: 100
