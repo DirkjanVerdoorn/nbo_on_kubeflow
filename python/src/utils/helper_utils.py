@@ -137,3 +137,42 @@ def get_tft_vocab(
 def _transformed_name(x):
     return x + '_xf'
 
+
+def get_latest_version(bucket: Text, prefix: Text):
+    """
+    Description
+    -----------
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    """
+
+    def _item_to_value(iterator, item):
+        return item
+
+    if prefix and not prefix.endswith('/'):
+        prefix += '/'
+    
+    extra_params = {
+        'projection': 'noAcl',
+        'prefix': prefix,
+        'delimiter': '/'
+    }
+
+    gcs = storage.Client()
+    path = '/b/' + bucket + '/o'
+
+    directories = page_iterator.HTTPIterator(
+        client=gcs,
+        api_request=gcs._connection.api_request,
+        path=path,
+        items_key='prefixes',
+        item_to_value=_item_to_value,
+        extra_params=extra_params
+    )
+    
+    return str(max([int(i.rsplit('/', 2)[1]) for i in directories]))
+
